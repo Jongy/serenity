@@ -849,8 +849,14 @@ String Editor::get_line(const String& prompt)
             }
             // ^E
             if (codepoint == 0x05) {
-
                 m_cursor = m_buffer.size();
+                continue;
+            }
+            // ^K
+            if (codepoint == 0x0b) {
+                for (size_t i = m_buffer.size() - 1; i >= m_cursor; --i)
+                    remove_at_index(i);
+                m_refresh_needed = true;
                 continue;
             }
             if (codepoint == '\n') {
